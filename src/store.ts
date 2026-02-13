@@ -134,6 +134,16 @@ export class AppStore extends ReactiveController {
 	clickSelected() {
 		getMainPage().selectedItem?.click()
 	}
+	deleteSelected() {
+		const cur = this.getCurrentDir()
+		if (cur) {
+			const children = cur.children
+			if (children[this.selectedIndex]) {
+				children.splice(this.selectedIndex, 1)
+			}
+			this.requestUpdate()
+		}
+	}
 }
 
 export const store = new AppStore()

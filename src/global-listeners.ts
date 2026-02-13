@@ -1,6 +1,8 @@
 import {cquerySelector} from 'html-vision'
 import {DEV} from './constants.js'
 import {getThemeStore, openSettingsDialog} from './imports.js'
+import toast from 'toastit'
+import {store} from './store.js'
 
 const inputNames = ['INPUT', 'TEXTAREA', 'MD-FILLED-TEXT-FIELD']
 export function eventIsFromInput(event: Event) {
@@ -34,6 +36,9 @@ window.addEventListener('keypress', async (event: KeyboardEvent) => {
 			break
 		case 's':
 			openSettingsDialog()
+			break
+		case 'Delete':
+			store.deleteSelected()
 			break
 	}
 })
