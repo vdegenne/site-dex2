@@ -54,6 +54,7 @@ export class PageMain extends PageElement {
 												${item.name ||
 												(item.type === 'link' ? item.url : 'undefined')}
 											</div>
+											<div slot="trailing-supporting-text">${item.weight}</div>
 										</md-list-item>
 										<!-- -->`
 								},
