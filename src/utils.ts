@@ -230,3 +230,6 @@ export function getLocalFormattedDate(date: Date = new Date()): string {
 		hour12: false,
 	}).format(date)
 }
+
+export const sortByWeightDesc = (items: dex.Item[]): dex.Item[] =>
+	[...items].sort((a, b) => b.weight - a.weight)

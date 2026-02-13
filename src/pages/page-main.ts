@@ -8,6 +8,7 @@ import 'wavy-text-element'
 import {directoryDialog, linkDialog} from '../dialogs.js'
 import {store} from '../store.js'
 import {PageElement} from './PageElement.js'
+import {sortByWeightDesc} from '../utils.js'
 
 declare global {
 	interface HTMLElementTagNameMap {
@@ -34,7 +35,7 @@ export class PageMain extends PageElement {
 				? html`<!-- -->
 						<md-list>
 							${repeat(
-								current.children,
+								sortByWeightDesc(current.children),
 								(c) => c.id,
 								(item, i) => {
 									return html`<!-- -->
