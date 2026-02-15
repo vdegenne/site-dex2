@@ -77,7 +77,7 @@
     "@vdegenne/forms": "^0.1.66",
     "@vdegenne/lit-debug": "^0.1.2",
     "@vdegenne/material-color-helpers": "^1.11.7",
-    "@vdegenne/mini-gamepad": "^0.4.8",
+    "@vdegenne/mini-gamepad": "^0.4.10",
     "@vdegenne/mini-rest": "^0.3.2",
     "@vdegenne/rollup-plugin-minify-html": "^1.0.6",
     "@vdegenne/router": "^0.1.8",
