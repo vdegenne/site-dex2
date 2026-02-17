@@ -1,1 +1,0 @@
-import{b as p,t as f,f as g,w as i,a as m,s as v}from"./index-FIVFs5ap.js";import{P as w}from"./PageElement-DEb3Wxaa.js";var O=Object.getOwnPropertyDescriptor,P=(t,s,n,a)=>{for(var e=a>1?void 0:a?O(s,n):s,r=t.length-1,o;r>=0;r--)(o=t[r])&&(e=o(e)||e);return e};let l=class extends w{render(){return p`404 NOT FOUND`}};l=P([f("page-404"),g(v),i(m``)],l);export{l as Page404};
