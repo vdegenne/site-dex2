@@ -1,8 +1,7 @@
-import {Repeater} from '@vdegenne/mini-gamepad/repeater.js'
 import {ReactiveController} from '@snar/lit'
 import {MGamepad, MiniGamepad, Mode} from '@vdegenne/mini-gamepad'
+import {Repeater} from '@vdegenne/mini-gamepad/repeater.js'
 import {state} from 'lit/decorators.js'
-import toast from 'toastit'
 import {store} from './store.js'
 
 const upRepeater = new Repeater({
@@ -11,7 +10,9 @@ const upRepeater = new Repeater({
 	},
 })
 const downRepeater = new Repeater({
-	action(...args) {},
+	action() {
+		store.selectBelow()
+	},
 })
 
 class GamepadController extends ReactiveController {
