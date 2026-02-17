@@ -1,8 +1,18 @@
+import {Repeater} from '@vdegenne/mini-gamepad/repeater.js'
 import {ReactiveController} from '@snar/lit'
 import {MGamepad, MiniGamepad, Mode} from '@vdegenne/mini-gamepad'
 import {state} from 'lit/decorators.js'
 import toast from 'toastit'
 import {store} from './store.js'
+
+const upRepeater = new Repeater({
+	action() {
+		store.selectAbove()
+	},
+})
+const downRepeater = new Repeater({
+	action(...args) {},
+})
 
 class GamepadController extends ReactiveController {
 	@state() gamepad: MGamepad | undefined
@@ -89,25 +99,35 @@ class GamepadController extends ReactiveController {
 				}
 			})
 
-			gamepad.for(map.LEFT_BUTTONS_TOP).before(({mode}) => {
-				switch (mode) {
-					case Mode.NORMAL:
-						store.selectAbove()
-						break
-					case Mode.PRIMARY:
-						break
-				}
-			})
+			gamepad
+				.for(map.LEFT_BUTTONS_TOP)
+				.before(({mode}) => {
+					switch (mode) {
+						case Mode.NORMAL:
+							upRepeater.start()
+							break
+						case Mode.PRIMARY:
+							break
+					}
+				})
+				.after(() => {
+					upRepeater.stop()
+				})
 
-			gamepad.for(map.LEFT_BUTTONS_BOTTOM).before(({mode}) => {
-				switch (mode) {
-					case Mode.NORMAL:
-						store.selectBelow()
-						break
-					case Mode.PRIMARY:
-						break
-				}
-			})
+			gamepad
+				.for(map.LEFT_BUTTONS_BOTTOM)
+				.before(({mode}) => {
+					switch (mode) {
+						case Mode.NORMAL:
+							downRepeater.start()
+							break
+						case Mode.PRIMARY:
+							break
+					}
+				})
+				.after(() => {
+					downRepeater.stop()
+				})
 
 			gamepad.for(map.LEFT_BUTTONS_LEFT).before(({mode}) => {
 				switch (mode) {
