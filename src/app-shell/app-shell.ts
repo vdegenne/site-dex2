@@ -99,9 +99,10 @@ export class AppShell extends MaterialShellChild {
 			.mdc-top-app-bar {
 				-webkit-app-region: drag;
 				app-region: drag;
-				background: rgba(255, 255, 255, 0.1); /* transparent layer */
+				background-color: color-mix(in srgb, var(--md-sys-color-surface-container) 30%, transparent);
 				backdrop-filter: blur(10px); /* the blur */
 				-webkit-backdrop-filter: blur(10px); /* safari */
+
 			}
 			#actions ::slotted(*), #navigation ::slotted(*) {
 				-webkit-app-region: no-drag;
