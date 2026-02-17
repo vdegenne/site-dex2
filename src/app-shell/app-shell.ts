@@ -32,7 +32,7 @@ export class AppShell extends MaterialShellChild {
 		return html`<!-- -->
 			<mwc-top-app-bar
 				?dense=${false}
-				style="--mdc-theme-primary:var(--md-sys-color-surface-container, transparent);--mdc-theme-on-primary:var(--md-sys-color-on-surface)"
+				style="--mdc-theme-primary:var(---md-sys-color-surface-container, transparent);--mdc-theme-on-primary:var(--md-sys-color-on-surface)"
 			>
 				<md-list-item
 					slot="title"
