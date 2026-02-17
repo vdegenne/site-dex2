@@ -1,6 +1,6 @@
 import '@material/mwc-top-app-bar'
 import {withController} from '@snar/lit'
-import {html, type PropertyValues} from 'lit'
+import {css, html, type PropertyValues} from 'lit'
 import {withStyles} from 'lit-with-styles'
 import {customElement} from 'lit/decorators.js'
 import {unsafeSVG} from 'lit/directives/unsafe-svg.js'
@@ -25,6 +25,14 @@ declare global {
 @withStyles(styles)
 @withController(store)
 export class AppShell extends MaterialShellChild {
+	static styles = css`
+		mwc-top-app-bar {
+			background: rgba(255, 255, 255, 0.1); /* transparent layer */
+			backdrop-filter: blur(10px); /* the blur */
+			-webkit-backdrop-filter: blur(10px); /* safari */
+		}
+	`
+
 	render() {
 		const currentDir = store.getCurrentDir()
 		const path = currentDir ? store.getPathById(currentDir.id) : null
