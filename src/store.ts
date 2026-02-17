@@ -132,7 +132,7 @@ export class AppStore extends ReactiveController {
 	selectBelow() {
 		this.selectedIndex = Math.min(
 			this.selectedIndex + 1,
-			store.flattenItems().length,
+			(this.getCurrentDir() ?? {children: []}).children.length - 1,
 		)
 	}
 
