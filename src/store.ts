@@ -127,12 +127,13 @@ export class AppStore extends ReactiveController {
 	}
 
 	selectAbove() {
-		// TODO: prevent out of bounds
-		this.selectedIndex--
+		this.selectedIndex = Math.max(this.selectedIndex - 1, 0)
 	}
 	selectBelow() {
-		// TODO: prevent out of bounds
-		this.selectedIndex++
+		this.selectedIndex = Math.min(
+			this.selectedIndex + 1,
+			store.flattenItems().length,
+		)
 	}
 
 	clickSelected() {
