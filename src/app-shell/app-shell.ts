@@ -101,7 +101,7 @@ export class AppShell extends MaterialShellChild {
 				app-region: drag;
 				background-color: color-mix(in srgb, var(--md-sys-color-surface-container) 30%, transparent);
 				backdrop-filter: blur(10px); /* the blur */
-				-webkit-backdrop-filter: blur(10px); /* safari */
+				-webkit-backdrop-filter: blur(4px); /* safari */
 
 			}
 			#actions ::slotted(*), #navigation ::slotted(*) {
