@@ -279,7 +279,7 @@ export function linkDialog(link?: dex.Link) {
 						${ctrl.F.TEXTFIELD('Name', 'name', {})}
 						${ctrl.F.TEXTFIELD('URL', 'url', {
 							autofocus: true,
-							type: 'url',
+							// type: 'url',
 						})}
 					</form>
 					<!-- -->`

@@ -8,7 +8,8 @@ import 'wavy-text-element'
 import {directoryDialog, linkDialog} from '../dialogs.js'
 import {store} from '../store.js'
 import {PageElement} from './PageElement.js'
-import {sortByWeightDesc} from '../utils.js'
+import {isValidUrl, parseCommand, sortByWeightDesc} from '../utils.js'
+import toast from 'toastit'
 
 declare global {
 	interface HTMLElementTagNameMap {
@@ -38,12 +39,33 @@ export class PageMain extends PageElement {
 								sortByWeightDesc(current.children),
 								(c) => c.id,
 								(item, i) => {
+									let isValidURL: boolean
+									if (item.type === 'link') {
+										isValidURL = isValidUrl(item.url)
+									}
 									return html`<!-- -->
 										<md-list-item
-											@click=${() => store.incrementWeight(item)}
+											@click=${() => {
+												if (item.type === 'link' && !isValidURL) {
+													try {
+														const {command, content} = parseCommand(item.url)
+														switch (command) {
+															case 'event':
+																window.dispatchEvent(new Event(content))
+																break
+														}
+													} catch {}
+												}
+												store.incrementWeight(item)
+											}}
 											href="${item.type === 'directory'
 												? `#id=${item.id}`
-												: item.url}"
+												: isValidURL!
+													? item.url
+													: undefined}"
+											type="${item.type === 'link' && !isValidURL!
+												? 'button'
+												: undefined}"
 											target="${item.type === 'link' ? '_blank' : undefined}"
 											?selected=${i === store.selectedIndex}
 										>
@@ -81,7 +103,7 @@ export class PageMain extends PageElement {
 						</md-list>
 						<!-- -->`
 				: html`<wavy-text class="text-center p-12">No items yet</wavy-text>`}
-			<div class="flex items-center justify-center gap-3">
+			<div class="flex items-center justify-center gap-3 pt-3 pb-12">
 				<md-filled-button
 					@click=${async () => {
 						try {

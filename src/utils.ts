@@ -233,3 +233,39 @@ export function getLocalFormattedDate(date: Date = new Date()): string {
 
 export const sortByWeightDesc = (items: dex.Item[]): dex.Item[] =>
 	[...items].sort((a, b) => b.weight - a.weight)
+
+export function isValidUrl(url: string) {
+	try {
+		new URL(url)
+		return true
+	} catch (_) {
+		return false
+	}
+}
+
+export function parseCommand(input?: string): {
+	command: string
+	content: string
+} {
+	if (!input) throw new Error('Input is undefined or empty')
+
+	const match = input.match(/^(\w+)\('([^']+)'\)$/)
+	if (!match) throw new Error(`Cannot parse command from input: ${input}`)
+
+	const command = match[1]
+	const content = match[2]
+
+	if (command === undefined || content === undefined) {
+		throw new Error(`Invalid command format: ${input}`)
+	}
+
+	return {command, content}
+}
+
+// Usage
+console.log(parseCommand("event('something')")) // { command: 'event', content: 'something' }
+console.log(parseCommand("script('asdf')")) // { command: 'script', content: 'asdf' }
+
+// Throws if invalid
+// parseCommand(undefined);
+// parseCommand("invalid format");
