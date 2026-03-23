@@ -66,7 +66,7 @@ export class PageMain extends PageElement {
 											type="${item.type === 'link' && !isValidURL!
 												? 'button'
 												: undefined}"
-											target="${item.type === 'link' ? '_blank' : undefined}"
+											_target="${item.type === 'link' ? '_blank' : undefined}"
 											?selected=${i === store.selectedIndex}
 										>
 											${item.type === 'directory'
