@@ -127,13 +127,19 @@ export class AppStore extends ReactiveController {
 	}
 
 	selectAbove() {
-		this.selectedIndex = Math.max(this.selectedIndex - 1, 0)
+		const children = this.getCurrentDir()?.children ?? []
+		const n = children.length
+		if (!n) return
+
+		this.selectedIndex = (this.selectedIndex - 1 + n) % n
 	}
+
 	selectBelow() {
-		this.selectedIndex = Math.min(
-			this.selectedIndex + 1,
-			(this.getCurrentDir() ?? {children: []}).children.length - 1,
-		)
+		const children = this.getCurrentDir()?.children ?? []
+		const n = children.length
+		if (!n) return
+
+		this.selectedIndex = (this.selectedIndex + 1) % n
 	}
 
 	clickSelected() {

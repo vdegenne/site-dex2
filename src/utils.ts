@@ -262,10 +262,87 @@ export function parseCommand(input?: string): {
 	return {command, content}
 }
 
-// Usage
-console.log(parseCommand("event('something')")) // { command: 'event', content: 'something' }
-console.log(parseCommand("script('asdf')")) // { command: 'script', content: 'asdf' }
+const faviconCache = new Map<string, Promise<HTMLImageElement | null>>()
 
-// Throws if invalid
-// parseCommand(undefined);
-// parseCommand("invalid format");
+export async function getFavicon(
+	url: string,
+): Promise<HTMLImageElement | null> {
+	try {
+		const origin = new URL(url).origin
+
+		if (faviconCache.has(origin)) {
+			return faviconCache.get(origin)!
+		}
+
+		const promise = (async (): Promise<HTMLImageElement | null> => {
+			function loadImage(src: string): Promise<HTMLImageElement | null> {
+				return new Promise((resolve) => {
+					try {
+						const img = new Image()
+
+						img.onload = () => resolve(img)
+						img.onerror = () => resolve(null)
+
+						img.src = src
+					} catch {
+						resolve(null)
+					}
+				})
+			}
+
+			const candidates = [
+				`${origin}/favicon.ico`,
+				`${origin}/favicon.png`,
+				`${origin}/favicon.svg`,
+				`${origin}/apple-touch-icon.png`,
+				`${origin}/apple-touch-icon-precomposed.png`,
+			]
+
+			for (const src of candidates) {
+				try {
+					const img = await loadImage(src)
+					if (img) return img
+				} catch {
+					continue
+				}
+			}
+
+			try {
+				const res = await fetch(origin)
+				if (!res.ok) return null
+
+				const html = await res.text()
+
+				const matches = [
+					...html.matchAll(
+						/<link[^>]+rel=["'][^"']*(icon|shortcut icon|apple-touch-icon)[^"']*["'][^>]+href=["']([^"']+)["']/gi,
+					),
+				]
+
+				for (const match of matches) {
+					try {
+						const href = match[2]
+						if (!href) continue
+
+						const faviconUrl = new URL(href, origin).href
+						const img = await loadImage(faviconUrl)
+
+						if (img) return img
+					} catch {
+						continue
+					}
+				}
+			} catch {
+				return null
+			}
+
+			return null
+		})()
+
+		faviconCache.set(origin, promise)
+
+		return promise
+	} catch {
+		return null
+	}
+}

@@ -1,14 +1,20 @@
+import {until} from 'lit/directives/until.js'
 import {type MdListItem} from '@material/web/list/list-item.js'
 import {withController} from '@snar/lit'
 import {css, html} from 'lit'
 import {withStyles} from 'lit-with-styles'
-import {customElement, query} from 'lit/decorators.js'
+import {customElement, property, query} from 'lit/decorators.js'
 import {repeat} from 'lit/directives/repeat.js'
 import 'wavy-text-element'
 import {directoryDialog, linkDialog} from '../dialogs.js'
 import {store} from '../store.js'
 import {PageElement} from './PageElement.js'
-import {isValidUrl, parseCommand, sortByWeightDesc} from '../utils.js'
+import {
+	getFavicon,
+	isValidUrl,
+	parseCommand,
+	sortByWeightDesc,
+} from '../utils.js'
 import toast from 'toastit'
 
 declare global {
@@ -22,12 +28,17 @@ declare global {
 @withStyles(css`
 	:host {
 	}
+	:host([gamepad]) md-list-item {
+		--md-ripple-hover-color: transparent;
+	}
 	md-list-item[selected] {
 		background-color: var(--md-sys-color-surface-container-high);
 	}
 `)
 export class PageMain extends PageElement {
 	@query('md-list-item[selected]') selectedItem?: MdListItem
+
+	@property({type: Boolean, reflect: true}) gamepad = false
 
 	render() {
 		const current = store.getCurrentDir()
@@ -71,7 +82,15 @@ export class PageMain extends PageElement {
 										>
 											${item.type === 'directory'
 												? html`<md-icon slot="start">folder</md-icon>`
-												: html`<md-icon slot="start">link</md-icon>`}
+												: until(
+														(async () =>
+															html`<md-icon slot="start"
+																>${await getFavicon(item.url)}</md-icon
+															>`)(),
+														html`<md-icon slot="start"
+															>progress_activity</md-icon
+														>`,
+													)}
 											<div slot="headline">
 												${item.name ||
 												(item.type === 'link' ? item.url : 'undefined')}
@@ -81,25 +100,6 @@ export class PageMain extends PageElement {
 										<!-- -->`
 								},
 							)}
-							${current.children.map((child) => {
-								return null
-								return html`<!-- -->
-									<md-list-item
-										href="${child.type === 'directory'
-											? `#id=${child.id}`
-											: child.url}"
-										target="${child.type === 'link' ? '_blank' : undefined}"
-									>
-										${child.type === 'directory'
-											? html`<md-icon slot="start">folder</md-icon>`
-											: html`<md-icon slot="start">link</md-icon>`}
-										<div slot="headline">
-											${child.name ||
-											(child.type === 'link' ? child.url : 'undefined')}
-										</div>
-									</md-list-item>
-									<!-- -->`
-							})}
 						</md-list>
 						<!-- -->`
 				: html`<wavy-text class="text-center p-12">No items yet</wavy-text>`}

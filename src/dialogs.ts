@@ -276,15 +276,18 @@ export function linkDialog(link?: dex.Link) {
 			() => {
 				return html`<!-- -->
 					<form class="flex flex-col gap-5">
-						${ctrl.F.TEXTFIELD('Name', 'name', {})}
-						${ctrl.F.TEXTFIELD('URL', 'url', {
+						${ctrl.F.TEXTFIELD('Name', 'name', {
 							autofocus: true,
+						})}
+						${ctrl.F.TEXTFIELD('URL', 'url', {
+							autofocus: false,
 							// type: 'url',
 						})}
 					</form>
 					<!-- -->`
 			},
 			{
+				quick: true,
 				ctrl,
 				actions(dialog) {
 					return html`<!-- -->

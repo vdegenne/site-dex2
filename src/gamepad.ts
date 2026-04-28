@@ -3,6 +3,7 @@ import {MGamepad, MiniGamepad, Mode} from '@vdegenne/mini-gamepad'
 import {Repeater} from '@vdegenne/mini-gamepad/repeater.js'
 import {state} from 'lit/decorators.js'
 import {store} from './store.js'
+import {getMainPage} from './pages/index.js'
 
 const upRepeater = new Repeater({
 	action() {
@@ -25,7 +26,8 @@ class GamepadController extends ReactiveController {
 			focusDeadTimeMs: 200,
 		})
 		minigp.onConnect((gamepad) => {
-			document.body.requestPointerLock()
+			// document.body.requestPointerLock()
+			getMainPage().gamepad = true
 			this.gamepad = gamepad
 			const map = gamepad.mapping
 
